@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .response-container {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Demo</h1>
+    <button id="fetchButton">Fetch API Response</button>
+    <div class="response-container">
+        <h3>Server Response:</h3>
+        <pre id="responseDisplay">Click "Fetch API Response" to make a call.</pre>
+    </div>
+
+    <script>
+        document.getElementById('fetchButton').addEventListener('click', () => {
+            const responseDisplay = document.getElementById('responseDisplay');
+            responseDisplay.textContent = "Making an API call...";
+
+            fetch('/api/hello')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    responseDisplay.textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    responseDisplay.textContent = `Error: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+</html>

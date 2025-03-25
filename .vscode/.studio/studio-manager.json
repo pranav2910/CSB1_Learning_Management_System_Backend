@@ -1,0 +1,29 @@
+{
+  "rules": [
+    {
+      "condition": "always",
+      "commandType": "vscode",
+      "command": "studio-manager.openFile src/main/java/com/example/Main.java 1"
+    },
+    {
+      "condition": "always",
+      "commandType": "vscode",
+      "command": "studio-manager.openSimpleBrowser https://${STUDIO_HOST_ID}-8080.${STUDIO_HOST}",
+      "delay": 2000
+    },
+    {
+      "condition": "always",
+      "commandType": "vscode",
+      "command": "studio-manager.openTerminal",
+      "cmdArgs": [
+        "mvn spring-boot:run",
+        {
+          "name": "spring",
+          "location": 1
+        }
+      ],
+      "delay": 3000
+    }
+  ],
+  "simpleBrowserDefaultAppUrl": "https://${STUDIO_HOST_ID}-8080.${STUDIO_HOST}"
+}
