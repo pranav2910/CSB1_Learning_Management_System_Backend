@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -31,13 +31,12 @@ public class User implements UserDetails {
     @Builder.Default
     private boolean verified = false;
     @Builder.Default
-    private Date createdAt = new Date();
+    private LocalDateTime createdAt = LocalDateTime.now();
     @Builder.Default
-    private Date updatedAt = new Date();
+    private LocalDateTime updatedAt = LocalDateTime.now();
     @Builder.Default
     private Boolean active = true;
 
-    // Security methods remain the same...
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));

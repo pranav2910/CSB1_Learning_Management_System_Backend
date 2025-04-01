@@ -11,4 +11,7 @@ public interface EnrollmentService {
     EnrollmentResponse markContentComplete(String courseId, String contentId) throws ResourceNotFoundException;
     Double getCourseProgress(String courseId) throws ResourceNotFoundException;
     void enrollInCourse(String courseId) throws ResourceNotFoundException, IllegalStateException;
+
+    // Added this method
+    void enrollStudent(String studentId, String courseId) throws ResourceNotFoundException, IllegalStateException;
 }

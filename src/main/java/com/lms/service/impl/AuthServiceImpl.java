@@ -112,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
                 .email(user.getEmail())
                 .role(user.getRole())
                 .avatarUrl(user.getAvatarUrl())
-                .createdAt(user.getCreatedAt().toInstant()
+                .createdAt(user.getCreatedAt()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime())
                 .isVerified(user.isVerified())

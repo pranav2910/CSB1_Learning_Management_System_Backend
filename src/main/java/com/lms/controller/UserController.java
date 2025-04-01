@@ -1,5 +1,6 @@
 package com.lms.controller;
 
+import com.lms.dto.request.UserUpdateRequest;
 import com.lms.dto.response.UserResponse;
 import com.lms.service.UserService;
 import lombok.RequiredArgsConstructor;

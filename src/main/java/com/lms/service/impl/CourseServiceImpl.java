@@ -131,7 +131,7 @@ public class CourseServiceImpl implements CourseService {
         Enrollment enrollment = Enrollment.builder()
                 .studentId(studentId)
                 .courseId(courseId)
-                .enrolledAt(new Date())
+                .enrolledAt(LocalDateTime.now())
                 .progress(0.0)
                 .isActive(true)
                 .build();

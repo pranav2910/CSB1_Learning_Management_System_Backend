@@ -2,20 +2,19 @@ package com.lms.service.impl;
 
 import com.lms.dto.response.EnrollmentResponse;
 import com.lms.exception.ResourceNotFoundException;
+import com.lms.exception.IllegalStateException;
 import com.lms.model.Enrollment;
 import com.lms.model.Course;
 import com.lms.repository.EnrollmentRepository;
+import com.lms.security.SecurityUtils;
 import com.lms.repository.CourseRepository;
 import com.lms.service.EnrollmentService;
-import com.lms.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +35,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public EnrollmentResponse getEnrollmentByCourse(String courseId) {
+    public EnrollmentResponse getEnrollmentByCourse(String courseId) throws ResourceNotFoundException {
         String studentId = SecurityUtils.getCurrentUserId();
         Enrollment enrollment = enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Enrollment", "studentId and courseId", 
@@ -47,7 +46,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     @Transactional
-    public EnrollmentResponse markContentComplete(String courseId, String contentId) {
+    public EnrollmentResponse markContentComplete(String courseId, String contentId) throws ResourceNotFoundException {
         String studentId = SecurityUtils.getCurrentUserId();
         
         Enrollment enrollment = enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId)
@@ -72,7 +71,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             enrollment.setProgress(newProgress);
             
             if (newProgress >= 100.0) {
-                enrollment.setCompletedAt(new Date());
+                enrollment.setCompletedAt(LocalDateTime.now());
             }
             
             enrollment = enrollmentRepository.save(enrollment);
@@ -82,13 +81,42 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public Double getCourseProgress(String courseId) {
+    public Double getCourseProgress(String courseId) throws ResourceNotFoundException {
         String studentId = SecurityUtils.getCurrentUserId();
         Enrollment enrollment = enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Enrollment", "studentId and courseId", 
                     studentId + "-" + courseId));
         
         return enrollment.getProgress() != null ? enrollment.getProgress() : 0.0;
+    }
+
+    @Override
+    @Transactional
+    public void enrollInCourse(String courseId) throws ResourceNotFoundException, IllegalStateException {
+        String studentId = SecurityUtils.getCurrentUserId();
+        enrollStudent(studentId, courseId);
+    }
+
+    @Override
+    @Transactional
+    public void enrollStudent(String studentId, String courseId) throws ResourceNotFoundException, IllegalStateException {
+        if (enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId)) {
+            throw new IllegalStateException("Already enrolled in this course");
+        }
+
+        @SuppressWarnings("unused")
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course", "id", courseId));
+
+        Enrollment enrollment = Enrollment.builder()
+                .studentId(studentId)
+                .courseId(courseId)
+                .enrolledAt(LocalDateTime.now())
+                .progress(0.0)
+                .isActive(true)
+                .build();
+
+        enrollmentRepository.save(enrollment);
     }
 
     private double calculateProgress(Enrollment enrollment, Course course) {
@@ -109,41 +137,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 .id(enrollment.getId())
                 .courseId(enrollment.getCourseId())
                 .courseTitle(course.getTitle())
-                .enrolledAt(convertToLocalDateTime(enrollment.getEnrolledAt()))
+                .enrolledAt(enrollment.getEnrolledAt())
                 .progressPercentage(enrollment.getProgress() != null ? enrollment.getProgress() : 0.0)
                 .completedContentIds(enrollment.getCompletedContentIds() != null ? 
                     enrollment.getCompletedContentIds() : List.of())
-                .completedAt(convertToLocalDateTime(enrollment.getCompletedAt()))
+                .completedAt(enrollment.getCompletedAt())
                 .build();
     }
-
-    private LocalDateTime convertToLocalDateTime(Date date) {
-        return date != null ? 
-            LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()) : 
-            null;
-    }
-
-    @Override
-@Transactional
-public void enrollStudent(String studentId, String courseId) 
-    throws ResourceNotFoundException, IllegalStateException {
-    if (enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId)) {
-        throw new IllegalStateException("Already enrolled in this course");
-    }
-    
-    Course course = courseRepository.findById(courseId)
-            .orElseThrow(() -> new ResourceNotFoundException("Course", "id", courseId));
-    
-    Enrollment enrollment = Enrollment.builder()
-            .studentId(studentId)
-            .courseId(courseId)
-            .enrolledAt(LocalDateTime.now())
-            .progress(0.0)
-            .isActive(true)
-            .build();
-    
-    enrollmentRepository.save(enrollment);
-}
-
-   
 }

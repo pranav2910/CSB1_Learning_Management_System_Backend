@@ -1,0 +1,52 @@
+2025-04-01 14:27:57 [restartedMain] INFO  com.lms.LmsApplication - Starting LmsApplication using Java 21.0.6 with PID 2247 (/home/workspace/my-project/target/classes started by root in /home/workspace/my-project)
+2025-04-01 14:27:57 [restartedMain] DEBUG com.lms.LmsApplication - Running with Spring Boot v3.4.1, Spring v6.2.1
+2025-04-01 14:27:57 [restartedMain] INFO  com.lms.LmsApplication - No active profile set, falling back to 1 default profile: "default"
+2025-04-01 14:27:57 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-04-01 14:27:57 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-04-01 14:27:58 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-04-01 14:27:58 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-04-01 14:27:58 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 118 ms. Found 10 MongoDB repository interfaces.
+2025-04-01 14:27:58 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'mongoAuditingHandler' defined in null: Cannot register bean definition [Root bean: class=org.springframework.data.auditing.IsNewAwareAuditingHandler; scope=; abstract=false; lazyInit=null; autowireMode=2; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=null; factoryMethodName=from; initMethodNames=null; destroyMethodNames=null] for bean 'mongoAuditingHandler' since there is already [Root bean: class=org.springframework.data.auditing.IsNewAwareAuditingHandler; scope=; abstract=false; lazyInit=null; autowireMode=2; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=null; factoryMethodName=from; initMethodNames=null; destroyMethodNames=null] bound.
+2025-04-01 14:27:58 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-04-01 14:27:58 [restartedMain] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'mongoAuditingHandler' could not be registered. A bean with that name has already been defined and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+2025-04-01 14:32:19 [restartedMain] INFO  com.lms.LmsApplication - Starting LmsApplication using Java 21.0.6 with PID 2643 (/home/workspace/my-project/target/classes started by root in /home/workspace/my-project)
+2025-04-01 14:32:19 [restartedMain] DEBUG com.lms.LmsApplication - Running with Spring Boot v3.4.1, Spring v6.2.1
+2025-04-01 14:32:19 [restartedMain] INFO  com.lms.LmsApplication - No active profile set, falling back to 1 default profile: "default"
+2025-04-01 14:32:19 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-04-01 14:32:19 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-04-01 14:32:20 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-04-01 14:32:20 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-04-01 14:32:20 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 107 ms. Found 10 MongoDB repository interfaces.
+2025-04-01 14:32:20 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'mongoAuditingHandler' defined in null: Cannot register bean definition [Root bean: class=org.springframework.data.auditing.IsNewAwareAuditingHandler; scope=; abstract=false; lazyInit=null; autowireMode=2; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=null; factoryMethodName=from; initMethodNames=null; destroyMethodNames=null] for bean 'mongoAuditingHandler' since there is already [Root bean: class=org.springframework.data.auditing.IsNewAwareAuditingHandler; scope=; abstract=false; lazyInit=null; autowireMode=2; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=null; factoryMethodName=from; initMethodNames=null; destroyMethodNames=null] bound.
+2025-04-01 14:32:20 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-04-01 14:32:20 [restartedMain] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The bean 'mongoAuditingHandler' could not be registered. A bean with that name has already been defined and overriding is disabled.
+
+Action:
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+

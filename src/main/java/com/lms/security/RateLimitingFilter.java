@@ -27,6 +27,7 @@ public class RateLimitingFilter extends OncePerRequestFilter {
         this.refillDuration = refillDuration;
     }
 
+    @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,

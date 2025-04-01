@@ -14,8 +14,8 @@ public class ErrorResponse {
     private List<String> errors;
     private String path;
 
-    public ErrorResponse(HttpStatus status, String message, List<String> errors, String path) {
-        this.timestamp = LocalDateTime.now();
+    public ErrorResponse(LocalDateTime timestamp, HttpStatus status, String message, List<String> errors, String path) {
+        this.timestamp = timestamp;
         this.status = status;
         this.message = message;
         this.errors = errors;

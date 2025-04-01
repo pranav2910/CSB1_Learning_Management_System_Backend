@@ -43,5 +43,6 @@ public interface CourseRepository extends MongoRepository<Course, String> {
     @Query("{ 'title': { $regex: ?0, $options: 'i' } }")
     List<Course> findByTitleContainingIgnoreCase(String search);
     
+    @SuppressWarnings("null")
     boolean existsById(String courseId);
 }

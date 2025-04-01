@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
@@ -45,16 +44,14 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     
     // Convert Date to LocalDate for grouping
     Map<LocalDate, BigDecimal> dailyRevenue = completedPayments.stream()
-            .collect(Collectors.groupingBy(
-                payment -> payment.getPaymentDate().toInstant()
-                               .atZone(ZoneId.systemDefault())
-                               .toLocalDate(),
-                Collectors.reducing(
-                    BigDecimal.ZERO,
-                    Payment::getAmount,
-                    BigDecimal::add
-                )
-            ));
+    .collect(Collectors.groupingBy(
+        payment -> payment.getPaymentDate().toLocalDate(),  // Corrected conversion
+        Collectors.reducing(
+            BigDecimal.ZERO,
+            Payment::getAmount,
+            BigDecimal::add
+        )
+    ));
 
     return RevenueAnalyticsResponse.builder()
             .totalRevenue(paymentRepository.sumCompletedPaymentsBetweenDates(startDateTime, endDateTime))

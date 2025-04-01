@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserResponse getCurrentUser() {
-        String email = SecurityUtils.getCurrentUserEmail();
+        String email = SecurityUtils.getCurrentUserId();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
         return toResponse(user);
@@ -39,7 +40,7 @@ public class UserService {
     }
 
     public UserResponse updateCurrentUser(UserUpdateRequest request) {
-        String email = SecurityUtils.getCurrentUserEmail();
+        String email = SecurityUtils.getCurrentUserId();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
 
@@ -49,6 +50,12 @@ public class UserService {
         if (request.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
+        if (request.getRole() != null) {
+            user.setRole(request.getRole());
+        }
+
+        user.setUpdatedAt(LocalDateTime.now());
+
 
         User updatedUser = userRepository.save(user);
         return toResponse(updatedUser);
@@ -69,6 +76,9 @@ public class UserService {
                 .role(user.getRole())
                 .avatarUrl(user.getAvatarUrl())
                 .createdAt(user.getCreatedAt())
+                .isVerified(user.isVerified()) // Fixed
+                .totalCoursesEnrolled(0)  // Placeholder, update with actual logic
+                .totalCoursesCreated(0)   // Placeholder, update with actual logic
                 .build();
     }
 }

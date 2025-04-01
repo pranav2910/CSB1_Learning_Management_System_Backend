@@ -19,14 +19,16 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<ReviewResponse> createReview(
-            @PathVariable String courseId,
-            @Valid @RequestBody ReviewRequest request) {
-        return ResponseEntity.ok(reviewService.createReview(request));
-    }
+        @PathVariable String courseId,
+        @RequestHeader("User-Id") String userId, // Assuming user ID is sent in request headers
+        @Valid @RequestBody ReviewRequest request) {
+        
+            return ResponseEntity.ok(reviewService.createReview(userId, courseId, request));
+}
 
     @GetMapping
     public ResponseEntity<List<ReviewResponse>> getAllReviews(@PathVariable String courseId) {
-        return ResponseEntity.ok(reviewService.getAllReviews(courseId));
+        return ResponseEntity.ok(reviewService.getReviewsByCourseId(courseId));
     }
 
     @PutMapping("/{reviewId}")
