@@ -681,3 +681,5 @@ Consider defining a bean of type 'com.cloudinary.Cloudinary' in your configurati
 2025-04-02 04:47:42 [restartedMain] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
 2025-04-02 04:47:42 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
 2025-04-02 04:47:42 [restartedMain] INFO  com.lms.LmsApplication - Started LmsApplication in 3.867 seconds (process running for 4.187)
+2025-04-02 04:49:39 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-02 04:49:39 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
