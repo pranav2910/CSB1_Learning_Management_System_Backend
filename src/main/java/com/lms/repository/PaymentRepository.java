@@ -12,6 +12,7 @@ import java.util.List;
 
 @Repository
 public interface PaymentRepository extends MongoRepository<Payment, String> {
+    
     @Query("{ 'status': 'COMPLETED' }")
     List<Payment> findCompletedPayments();
     
@@ -28,7 +29,12 @@ public interface PaymentRepository extends MongoRepository<Payment, String> {
         "{ $match: { status: 'COMPLETED', paymentDate: { $gte: ?0, $lte: ?1 } } }",
         "{ $group: { _id: null, total: { $sum: '$amount' } } }"
     })
-    BigDecimal sumCompletedPaymentsBetweenDates(LocalDateTime start, LocalDateTime end);
+    Double sumCompletedPaymentsBetweenDates(LocalDateTime start, LocalDateTime end);
+    
+    default BigDecimal getSumCompletedPaymentsBetweenDates(LocalDateTime start, LocalDateTime end) {
+        Double result = sumCompletedPaymentsBetweenDates(start, end);
+        return result != null ? BigDecimal.valueOf(result) : BigDecimal.ZERO;
+    }
     
     @Query("{ 'status': 'COMPLETED', 'paymentDate': { $gte: ?0, $lte: ?1 } }")
     List<Payment> findCompletedPaymentsBetweenDates(LocalDateTime start, LocalDateTime end);
@@ -37,10 +43,13 @@ public interface PaymentRepository extends MongoRepository<Payment, String> {
         "{ $match: { status: 'COMPLETED', courseId: ?0 } }",
         "{ $group: { _id: null, total: { $sum: '$amount' } } }"
     })
-    BigDecimal sumCompletedPaymentsByCourseId(String courseId);
-
+    Double sumCompletedPaymentsByCourseId(String courseId);
+    
+    default BigDecimal getSumCompletedPaymentsByCourseId(String courseId) {
+        Double result = sumCompletedPaymentsByCourseId(courseId);
+        return result != null ? BigDecimal.valueOf(result) : BigDecimal.ZERO;
+    }
+    
     @Query("{ 'studentId': ?0 }")
     List<Payment> findByStudentId(String studentId);
-    
-    
 }

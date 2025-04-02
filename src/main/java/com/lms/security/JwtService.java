@@ -3,7 +3,10 @@ package com.lms.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@PropertySource("classpath:application.properties")
 @Service
 public class JwtService {
     @Value("${jwt.secret}")
@@ -96,6 +100,13 @@ public class JwtService {
     public long getRefreshExpiration() {
         return refreshExpiration;
     }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("JWT Expiration: " + jwtExpiration);
+        System.out.println("JWT Refresh Expiration: " + refreshExpiration);
+    }
+
 
     
 }

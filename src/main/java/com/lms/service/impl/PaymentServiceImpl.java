@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -71,7 +70,7 @@ public class PaymentServiceImpl implements PaymentService {
             Payment payment = Payment.builder()
                     .studentId(userId)
                     .courseId(course.getId())
-                    .amount(amount)
+                    .amount(amount) // Stored as String internally
                     .paymentMethod(request.getPaymentMethod())
                     .transactionId(charge.getId())
                     .status(charge.getPaid() ? "COMPLETED" : "FAILED")
@@ -135,7 +134,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .id(payment.getId())
                 .courseId(payment.getCourseId())
                 .courseTitle(courseTitle)
-                .amount(payment.getAmount())
+                .amount(payment.getAmount()) // Automatically converts to BigDecimal
                 .paymentMethod(payment.getPaymentMethod())
                 .transactionId(payment.getTransactionId())
                 .paymentDate(payment.getPaymentDate())

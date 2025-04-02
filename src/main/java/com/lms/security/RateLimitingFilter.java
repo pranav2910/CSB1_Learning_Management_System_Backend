@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -15,17 +16,14 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Component
 public class RateLimitingFilter extends OncePerRequestFilter {
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
-    private final int capacity;
-    private final int refillAmount;
-    private final Duration refillDuration;
+    private final int capacity = 10;
+    private final int refillAmount = 5;
+    private final Duration refillDuration = Duration.ofMinutes(1);
 
-    public RateLimitingFilter(int capacity, int refillAmount, Duration refillDuration) {
-        this.capacity = capacity;
-        this.refillAmount = refillAmount;
-        this.refillDuration = refillDuration;
-    }
+    public RateLimitingFilter() {}
 
     @SuppressWarnings("null")
     @Override

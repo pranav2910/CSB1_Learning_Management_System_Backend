@@ -35,6 +35,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                 .activeUsersLast30Days(userRepository.countRecentlyActiveUsers(LocalDateTime.now().minusDays(30)))
                 .build();
     }
+
     @Override
     public RevenueAnalyticsResponse getRevenueAnalytics(LocalDate startDate, LocalDate endDate) {
         LocalDateTime startDateTime = startDate != null ? startDate.atStartOfDay() : LocalDate.now().minusMonths(1).atStartOfDay();
@@ -42,31 +43,24 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
         List<Payment> completedPayments = paymentRepository.findCompletedPaymentsBetweenDates(startDateTime, endDateTime);
     
-    // Convert Date to LocalDate for grouping
-    Map<LocalDate, BigDecimal> dailyRevenue = completedPayments.stream()
-    .collect(Collectors.groupingBy(
-        payment -> payment.getPaymentDate().toLocalDate(),  // Corrected conversion
-        Collectors.reducing(
-            BigDecimal.ZERO,
-            Payment::getAmount,
-            BigDecimal::add
-        )
-    ));
+        // Convert Date to LocalDate for grouping
+        Map<LocalDate, BigDecimal> dailyRevenue = completedPayments.stream()
+            .collect(Collectors.groupingBy(
+                payment -> payment.getPaymentDate().toLocalDate(),
+                Collectors.reducing(BigDecimal.ZERO, Payment::getAmount, BigDecimal::add)
+            ));
 
-    return RevenueAnalyticsResponse.builder()
-            .totalRevenue(paymentRepository.sumCompletedPaymentsBetweenDates(startDateTime, endDateTime))
-            .monthlyRevenue(paymentRepository.sumCompletedPaymentsBetweenDates(
-                LocalDate.now().withDayOfMonth(1).atStartOfDay(),
-                LocalDateTime.now()))
-            .yearlyRevenue(paymentRepository.sumCompletedPaymentsBetweenDates(
-                LocalDate.now().withDayOfYear(1).atStartOfDay(),
-                LocalDateTime.now()))
-            .dailyRevenue(dailyRevenue)
-            .build();
-}
-
-
-    
+        return RevenueAnalyticsResponse.builder()
+                .totalRevenue(paymentRepository.getSumCompletedPaymentsBetweenDates(startDateTime, endDateTime))
+                .monthlyRevenue(paymentRepository.getSumCompletedPaymentsBetweenDates(
+                        LocalDate.now().withDayOfMonth(1).atStartOfDay(),
+                        LocalDateTime.now()))
+                .yearlyRevenue(paymentRepository.getSumCompletedPaymentsBetweenDates(
+                        LocalDate.now().withDayOfYear(1).atStartOfDay(),
+                        LocalDateTime.now()))
+                .dailyRevenue(dailyRevenue)
+                .build();
+    }
 
     @Override
     public List<CoursePerformanceResponse> getCoursePerformance() {
@@ -75,7 +69,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                         .courseId(course.getId())
                         .courseTitle(course.getTitle())
                         .enrollments(enrollmentRepository.countByCourseId(course.getId()))
-                        .revenue(paymentRepository.sumCompletedPaymentsByCourseId(course.getId()))
+                        .revenue(paymentRepository.getSumCompletedPaymentsByCourseId(course.getId()))
                         .averageRating(reviewRepository.findAverageRatingByCourseId(course.getId()))
                         .completionRate(enrollmentRepository.calculateCompletionRate(course.getId()))
                         .build())
@@ -86,12 +80,10 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     public UserActivityResponse getUserActivityAnalytics() {
         return UserActivityResponse.builder()
                 .newUsersLast30Days(userRepository.countUsersRegisteredBetween(
-                    LocalDateTime.now().minusDays(30),
-                    LocalDateTime.now()
-                ))
+                        LocalDateTime.now().minusDays(30),
+                        LocalDateTime.now()))
                 .activeUsersLast7Days(userRepository.countRecentlyActiveUsers(
-                    LocalDateTime.now().minusDays(7)
-                ))
+                        LocalDateTime.now().minusDays(7)))
                 .activityByCountry(userRepository.countUsersByCountry())
                 .userGrowthByMonth(userRepository.countUserGrowthByMonth())
                 .build();
@@ -101,8 +93,8 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     public Map<String, Object> getCourseEnrollmentStats() {
         return courseRepository.findAll().stream()
                 .collect(Collectors.toMap(
-                    Course::getTitle,
-                    course -> enrollmentRepository.countByCourseId(course.getId())
+                        Course::getTitle,
+                        course -> enrollmentRepository.countByCourseId(course.getId())
                 ));
     }
 }
