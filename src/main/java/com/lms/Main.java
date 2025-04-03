@@ -18,8 +18,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         description = "Udemy-like platform APIs"
 ))
 @Import(SwaggerConfig.class)  // Optional: Only if you have custom Swagger config
-public class LmsApplication {
+public class Main{
     public static void main(String[] args) {
-        SpringApplication.run(LmsApplication.class, args);
+        SpringApplication.run(Main.class, args);
     }
 }
