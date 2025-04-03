@@ -78,3 +78,5 @@
 2025-04-03 13:40:15 [restartedMain] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
 2025-04-03 13:40:15 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
 2025-04-03 13:40:15 [restartedMain] INFO  com.lms.Main - Started Main in 3.822 seconds (process running for 4.152)
+2025-04-03 13:45:07 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-03 13:45:07 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
